@@ -325,7 +325,7 @@ COMMENT_FORM;
                     return $result;
                 }
                 
-                $response = recaptcha_check_answer($this->options['private_key'], $_SERVER['REMOTEADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+                $response = recaptcha_check_answer($this->options['private_key'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
                 
                 // response is bad, add incorrect response error
                 // todo: why echo the error here? wpmu specific?
@@ -478,11 +478,11 @@ JS;
             if (!is_single() && !is_page())
                 return;
             
+            if (empty($_REQUEST['rcommentid']) || empty($_REQUEST['rchash']))
+               return; 
+            
             $comment_id = $_REQUEST['rcommentid'];
             $comment_hash = $_REQUEST['rchash'];
-            
-            if (empty($comment_id) || empty($comment_hash))
-               return;
             
             if ($comment_hash == $this->hash_comment($comment_id)) {
                $comment = get_comment($comment_id);
